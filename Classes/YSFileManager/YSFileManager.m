@@ -59,6 +59,12 @@
     return created;
 }
 
++ (BOOL)removeAtPath:(NSString*)path
+{
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    return [fileManager removeItemAtPath:path error:NULL];
+}
+
 + (BOOL)fileExistsAtPath:(NSString*)path
 {
     NSFileManager* fileManager = [[NSFileManager alloc] init];
@@ -113,12 +119,6 @@
         }
     }
     return hitFileNames;
-}
-
-+ (BOOL)removeFilePath:(NSString*)path
-{
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    return [fileManager removeItemAtPath:path error:NULL];
 }
 
 @end

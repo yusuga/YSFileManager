@@ -22,8 +22,11 @@
 + (NSString*)cachesDirectory;
 + (NSString*)cachesDirectoryWithAppendingPathComponent:(NSString*)path;
 
-/* ディレクトリの作成 */
+/* pathのディレクトリを作成 */
 + (BOOL)createDirectoryAtPath:(NSString*)path;
+
+/* pathのファイルまたはディレクトリを削除 */
++ (BOOL)removeAtPath:(NSString*)path;
 
 /* pathのファイルが存在しているか */
 + (BOOL)fileExistsAtPath:(NSString*)path;
@@ -37,7 +40,5 @@
 /* directoryPath内のextension(拡張子)と一致する全てのファイル名 */
 + (NSArray*)fileNamesAtDirectoryPath:(NSString*)directoryPath extension:(NSString*)extension;
 
-/* pathのファイルを削除 */
-+ (BOOL)removeFilePath:(NSString*)path;
 
 @end
