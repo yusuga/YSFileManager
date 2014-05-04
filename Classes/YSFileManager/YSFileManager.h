@@ -13,14 +13,17 @@
 /* Documents */
 + (NSString*)documentDirectory;
 + (NSString*)documentDirectoryWithAppendingPathComponent:(NSString*)path;
++ (NSString*)documentDirectoryWithAppendingPathComponent:(NSString*)path create:(BOOL)shouldCreate;
 
 /* tmp */
 + (NSString*)temporaryDirectory;
 + (NSString*)temporaryDirectoryWithAppendingPathComponent:(NSString*)path;
++ (NSString*)temporaryDirectoryWithAppendingPathComponent:(NSString*)path create:(BOOL)shouldCreate;
 
 /* Library/Caches */
 + (NSString*)cachesDirectory;
 + (NSString*)cachesDirectoryWithAppendingPathComponent:(NSString*)path;
++ (NSString*)cachesDirectoryWithAppendingPathComponent:(NSString*)path create:(BOOL)shouldCreate;;
 
 /* pathのディレクトリを作成 */
 + (BOOL)createDirectoryAtPath:(NSString*)path;

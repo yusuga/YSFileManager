@@ -10,20 +10,11 @@
 
 @implementation YSFileManager
 
-+ (NSString*)temporaryDirectory
-{
-    return NSTemporaryDirectory();
-}
-
-+ (NSString*)temporaryDirectoryWithAppendingPathComponent:(NSString*)path
-{
-    return [[self temporaryDirectory] stringByAppendingPathComponent:path];
-}
+#pragma mark - document
 
 + (NSString*)documentDirectory
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-                                                         NSDocumentDirectory,
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                          NSUserDomainMask,
                                                          YES);
     return [paths objectAtIndex:0];
@@ -34,10 +25,33 @@
     return [[self documentDirectory] stringByAppendingPathComponent:path];
 }
 
++ (NSString*)documentDirectoryWithAppendingPathComponent:(NSString*)path create:(BOOL)shouldCreate
+{
+    return [self directory:[self documentDirectoryWithAppendingPathComponent:path] create:shouldCreate];
+}
+
+#pragma mark - temporary
+
++ (NSString*)temporaryDirectory
+{
+    return NSTemporaryDirectory();
+}
+
++ (NSString*)temporaryDirectoryWithAppendingPathComponent:(NSString*)path
+{
+    return [[self temporaryDirectory] stringByAppendingPathComponent:path];
+}
+
++ (NSString *)temporaryDirectoryWithAppendingPathComponent:(NSString *)path create:(BOOL)shouldCreate
+{
+    return [self directory:[[self temporaryDirectory] stringByAppendingPathComponent:path] create:shouldCreate];
+}
+
+#pragma mark - caches
+
 + (NSString*)cachesDirectory
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-                                                         NSCachesDirectory,
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
                                                          NSUserDomainMask,
                                                          YES);
     return [paths objectAtIndex:0];
@@ -48,10 +62,27 @@
     return [[self cachesDirectory] stringByAppendingPathComponent:path];
 }
 
++ (NSString *)cachesDirectoryWithAppendingPathComponent:(NSString *)path create:(BOOL)shouldCreate
+{
+    return [self directory:[[self cachesDirectory] stringByAppendingPathComponent:path] create:shouldCreate];
+}
+
+#pragma mark -
+
++ (NSString*)directory:(NSString*)directory create:(BOOL)shouldCreate
+{
+    if (shouldCreate && ![self fileExistsAtPath:directory]) {
+        [self createDirectoryAtPath:directory];
+    }
+    return directory;
+}
+
+#pragma mark -
+
 + (BOOL)createDirectoryAtPath:(NSString *)path
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error = nil;
+    NSError *error = nil;    
     BOOL created = [fileManager createDirectoryAtPath:path
                           withIntermediateDirectories:YES
                                            attributes:nil
