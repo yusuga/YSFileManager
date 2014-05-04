@@ -18,12 +18,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     NSString *path = @"dir1/text.text";
-    NSString *fullPath = [YSFileManager documentDirectoryWithAppendingPathComponent:path];
+    NSString *fullPath = [YSFileManager documentDirectoryWithAppendingPathComponent:path create:YES];
     NSLog(@"document full path = %@", fullPath);
-    BOOL created = [YSFileManager createDirectoryAtPath:fullPath];
-    NSLog(@"created %@", created ? @"YES" : @"NO");
 }
 
 - (void)didReceiveMemoryWarning

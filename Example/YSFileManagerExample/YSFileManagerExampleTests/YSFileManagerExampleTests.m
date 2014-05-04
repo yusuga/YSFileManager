@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "YSFileManager.h"
 
 @interface YSFileManagerExampleTests : XCTestCase
 
@@ -17,7 +18,15 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    for (NSString *path in @[[YSFileManager documentDirectory],
+                             [YSFileManager temporaryDirectory],
+                             [YSFileManager cachesDirectory]])
+    {
+        for (NSString *fileName in [YSFileManager fileNamesAtDirectoryPath:path]) {
+            [YSFileManager removeAtPath:[path stringByAppendingPathComponent:fileName]];
+        }
+    }
 }
 
 - (void)tearDown
@@ -26,9 +35,20 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testCreateDirectory
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    NSString *appendPath = [NSString stringWithFormat:@"%@/%@/%@", @(arc4random_uniform(10)), @(arc4random_uniform(10)), @(arc4random_uniform(10))];;
+    NSString *fullPath = [YSFileManager documentDirectoryWithAppendingPathComponent:appendPath create:YES];
+    NSLog(@"document: %@", fullPath);
+    XCTAssertTrue([YSFileManager fileExistsAtPath:fullPath], @"fullPath: %@", fullPath);
+    
+    fullPath = [YSFileManager temporaryDirectoryWithAppendingPathComponent:appendPath create:YES];
+    NSLog(@"temporary: %@", fullPath);
+    XCTAssertTrue([YSFileManager fileExistsAtPath:fullPath], @"fullPath: %@", fullPath);
+    
+    fullPath = [YSFileManager cachesDirectoryWithAppendingPathComponent:appendPath create:YES];
+    NSLog(@"caches: %@", fullPath);
+    XCTAssertTrue([YSFileManager fileExistsAtPath:fullPath], @"fullPath: %@", fullPath);
 }
 
 @end
